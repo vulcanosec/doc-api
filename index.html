@@ -1,0 +1,1466 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>VulcanoSec API Reference</title>
+
+    <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script src="javascripts/all.js" type="text/javascript"></script>
+
+  </head>
+
+  <body class="index">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="images/logo.png" />
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="api-reference">API Reference</h1>
+
+<p>The <a href="http://vulcanosec.com">VulcanoSec</a> API is based on REST. It is designed to be easy and predictable and to have resource-oriented URL endpoints. It uses common HTTP verbs and response codes to indicate API errors. Therefore the API can be understood by standard HTTP clients and libraries. In general the API uses JSON as data input and output format.</p>
+
+<h3 id="api-endpoint-for-vulcanosec-suite-on-premise:">API Endpoint For VulcanoSec Suite On-Premise:</h3>
+
+<p><code class="prettyprint">https://hostname/api/</code></p>
+
+<h1 id="authentication">Authentication</h1>
+
+<blockquote>
+<p>Example</p>
+</blockquote>
+<pre class="highlight shell"><code><span class="c"># Request an access token via</span>
+
+curl -X POST https://hostname/api/oauth/token <span class="se">\</span>
+  -u admin:flyingsheepwithwings <span class="se">\</span>
+  -d <span class="s2">"grant_type=client_credentials"</span>
+</code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://hostname/api/oauth/token</code></p>
+
+<p>You need to send a &lsquo;Authorization: Basic base64encodedpassword&rsquo; header with your username and password in order to retrieve a valid api token.</p>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"access_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg=="</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"expires_in"</span><span class="p">:</span><span class="w"> </span><span class="mi">79781</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"token_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec token"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>VulcanoSec uses API token to allow access to the API and expects for the API key to be included as <a href="http://en.wikipedia.org/wiki/Basic_access_authentication">HTTP Basic Authentication</a> in all API requests to the server in a header that looks like the following:</p>
+
+<p><code class="prettyprint">Authorization: Basic VlMzeDFYU2c0SGsvd3h3OElQKzJYcG1vS3luUjd1cnhnbGFHZkxmRlJYYnhZbGp4Tlc1bWtzT1NOaitCa08yRFZvUWVoR29zQm5xQ0pBOFdBejNKeWc9PTo=</code></p>
+
+<p>You need to provide your API key as the username like <code class="prettyprint">VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg==:</code>. A password is not required. Basic Authentication uses the colon <code class="prettyprint">:</code> to seperat between username and password.</p>
+
+<pre class="inline">
+// a method to generate the Basic header in JavaScript
+// @see https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/btoa
+var user = 'admin', pass = ''
+btoa(user + ':' + pass)
+// return "YWRtaW46"
+</pre>
+
+<blockquote>
+<p>For request authorization, use the following request scheme:</p>
+</blockquote>
+<pre class="highlight shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
+curl <span class="s2">"https://hostname/api/version"</span> <span class="se">\</span>
+  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"api"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.1"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<aside class="notice">
+You must replace <code>VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg==</code> with your retrieved API key.
+</aside>
+
+<aside class="warning">If you&rsquo;re not using an administrator API key, note that some API requests will return 403 Forbidden if the user has not the appropriate permissions.</aside>
+
+<h1 id="organizations">Organizations</h1>
+
+<h2 id="list-your-organizations">List your organizations</h2>
+<pre class="highlight shell"><code><span class="c"># lists all organizations</span>
+curl  <span class="s2">"https://hostname/api/orgs"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Acme Industries"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p>Returns a list of all your organizations.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/orgs/</code></p>
+
+<h2 id="get-an-organization">Get an organization</h2>
+<pre class="highlight shell"><code><span class="c"># Get an organizations</span>
+curl  <span class="s2">"https://hostname/api/orgs/acme"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Acme Industries"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/orgs/:org</code></p>
+
+<p>Return a single organization.</p>
+
+<h2 id="create-an-organization">Create an organization</h2>
+<pre class="highlight shell"><code><span class="c"># creates a new organizations</span>
+curl -X POST <span class="s2">"https://hostname/api/orgs"</span> <span class="se">\</span>
+ -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
+  -d <span class="s2">"{ </span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">acme</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Acme Industries</span><span class="se">\"</span><span class="s2">}"</span>
+
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://hostname/api/orgs/</code></p>
+
+<h3 id="arguments">Arguments</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td> Required. The ID of the organization</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td> Required. The name of the organization</td>
+</tr>
+</tbody></table>
+
+<h2 id="edit-an-organization">Edit an organization</h2>
+<pre class="highlight shell"><code><span class="c"># edits an organizations</span>
+curl -X PATCH <span class="s2">"https://hostname/api/orgs/acme"</span> <span class="se">\</span>
+ -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
+  -d <span class="s2">"{</span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Acme Industries Inc.</span><span class="se">\"</span><span class="s2">}"</span>
+
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<p>Edits the name of an organization.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PATCH https://hostname/api/orgs/</code></p>
+
+<h3 id="arguments">Arguments</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td> The name of the organization</td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-an-organization">Delete an organization</h2>
+<pre class="highlight shell"><code><span class="c"># deletes an organizations</span>
+curl -X DELETE <span class="s2">"https://hostname/api/orgs/acme"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<p>This request deletes an existing organization. Deleting an organization requires admin rights access.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">DELETE https://hostname/api/orgs/:org</code></p>
+
+<aside class="warning">By deleting an organization you delete assigned teams, nodes, environments and scan reports, too.</aside>
+
+<h1 id="teams">Teams</h1>
+
+<h2 id="list-teams">List teams</h2>
+<pre class="highlight shell"><code><span class="c"># list teams</span>
+curl  <span class="s2">"https://hostname/api/orgs/acme/teams"</span> <span class="se">\</span>
+  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"owners"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"org"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Owners"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p>This request returns all teams that are part of an organization. By default, each organization has a <code class="prettyprint">owners</code> team.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/orgs/:org/teams</code></p>
+
+<h2 id="get-team">Get team</h2>
+<pre class="highlight shell"><code><span class="c"># get a team</span>
+curl  <span class="s2">"https://hostname/api/orgs/acme/teams/owners"</span> <span class="se">\</span>
+  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"owners"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"org"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Owners"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"members"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"admin"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"permissions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"harden"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"manage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"patch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"scan"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Get detailed information about one team.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/orgs/:org/teams/:team</code></p>
+
+<h2 id="create-team">Create team</h2>
+<pre class="highlight shell"><code><span class="c"># creates a new team</span>
+curl -X POST <span class="s2">"https://hostname/api/orgs/acme/teams"</span> <span class="se">\</span>
+ -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
+  -d <span class="s2">"{ </span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">audit</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">Auditors</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">permissions</span><span class="se">\"</span><span class="s2">: {</span><span class="se">\"</span><span class="s2">scan</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">true</span><span class="se">\"</span><span class="s2">}}"</span>
+
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<p>Create a new team within your organization.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://hostname/api/orgs/:org/teams</code></p>
+
+<h3 id="arguments">Arguments</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td> Required. The ID of the team</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td> Required. The name of the team</td>
+</tr>
+<tr>
+<td>permissions</td>
+<td>object</td>
+<td>Optional. Sets the team permissions</td>
+</tr>
+</tbody></table>
+
+<p>The permissions are defined as follows:</p>
+
+<pre class="inline">
+{
+    id: 'audit',
+    name: 'Auditors',
+    permissions: {
+        scan: "true"
+    }
+}
+</pre>
+
+<p>VulcanoSec supports the following permissions: <code class="prettyprint">manage</code>, <code class="prettyprint">scan</code>, <code class="prettyprint">harden</code> and <code class="prettyprint">patch</code>.</p>
+
+<h2 id="edit-team">Edit team</h2>
+<pre class="highlight shell"><code><span class="c"># edit team</span>
+curl -X PATCH <span class="s2">"https://hostname/api/orgs/acme/teams/audit"</span> <span class="se">\</span>
+ -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
+  -d <span class="s2">"{</span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">External Auditors</span><span class="se">\"</span><span class="s2">}"</span>
+
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<p>Create a new team within your organization.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PATCH https://hostname/api/orgs/:org/teams/:team</code></p>
+
+<h3 id="arguments">Arguments</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>Optional. The name of the team</td>
+</tr>
+<tr>
+<td>permissions</td>
+<td>object</td>
+<td>Optional. Sets the team permissions</td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-team">Delete team</h2>
+<pre class="highlight shell"><code><span class="c"># deletes a team</span>
+curl -X DELETE <span class="s2">"https://hostname/api/orgs/acme/teams/audit"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<p>Deletes a team within your organization.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">DELETE https://hostname/api/orgs/:org/teams/:team</code></p>
+
+<aside class="notice">
+Be aware, that the `owners` team cannot be deleted.
+</aside>
+
+<h2 id="team-permissions">Team Permissions</h2>
+<pre class="highlight shell"><code><span class="c"># edit team</span>
+curl -X PATCH <span class="s2">"https://hostname/api/orgs/acme/teams/audit"</span> <span class="se">\</span>
+ -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
+  -d <span class="s2">"{</span><span class="se">\"</span><span class="s2">permissions</span><span class="se">\"</span><span class="s2">:{</span><span class="se">\"</span><span class="s2">manage</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">false</span><span class="se">\"</span><span class="s2">}}"</span>
+
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PATCH https://hostname/api/orgs/:org/teams/:team/members/:member</code></p>
+
+<h2 id="list-team-memberships">List team memberships</h2>
+<pre class="highlight shell"><code><span class="c"># list teams</span>
+curl <span class="s2">"https://hostname/api/orgs/acme/teams/owners"</span> <span class="se">\</span>
+  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"owners"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"org"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Owners"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"members"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"admin"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"permissions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"harden"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"manage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"patch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"scan"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/orgs/:org/teams/:team/members</code></p>
+
+<h2 id="add-team-membership">Add team membership</h2>
+<pre class="highlight shell"><code><span class="c"># add a team member</span>
+curl -X POST <span class="s2">"https://hostname/api/orgs/acme/teams/owners/members"</span> <span class="se">\</span>
+ -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
+  -d <span class="s2">"[</span><span class="se">\"</span><span class="s2">bob</span><span class="se">\"</span><span class="s2">]"</span>
+
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://hostname/api/orgs/:org/teams/:team/members</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>users</td>
+<td>array</td>
+<td> Required. Array of user ids</td>
+</tr>
+</tbody></table>
+
+<h2 id="remove-team-membership">Remove team membership</h2>
+<pre class="highlight shell"><code><span class="c"># delete a team member</span>
+curl -X DELETE <span class="s2">"https://hostname/api/orgs/acme/teams/audit/members/bob"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">DELETE https://hostname/api/orgs/:org/teams/:team/members/:member</code></p>
+
+<h1 id="users">Users</h1>
+
+<h2 id="get-all-users">Get all users</h2>
+<pre class="highlight shell"><code><span class="c"># lists all users</span>
+curl  <span class="s2">"https://hostname/api/users"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Core Admin"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p>List all users in your tenant.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/users</code></p>
+
+<h2 id="get-a-single-user">Get a single user</h2>
+<pre class="highlight shell"><code><span class="c"># lists all users</span>
+curl  <span class="s2">"https://hostname/api/users/admin"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Core Admin"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"preferences"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"permissions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"site_admin"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Returns a specific user in your tenant.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/users/:user</code></p>
+
+<h2 id="create-a-new-user">Create a new user</h2>
+<pre class="highlight shell"><code><span class="c"># creates a new user</span>
+curl -X POST <span class="s2">"https://hostname/api/users"</span> <span class="se">\</span>
+ -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
+  -d <span class="s2">"{ </span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">bob</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">BoB</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">pass</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">helloworld</span><span class="se">\"</span><span class="s2">}"</span>
+
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<p>Creates a new user in your tenant.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://hostname/api/users/</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td> Required. The ID of the user</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td> Required. The name of the user</td>
+</tr>
+<tr>
+<td>password</td>
+<td>string</td>
+<td> Required. Unencrypted password</td>
+</tr>
+</tbody></table>
+
+<pre class="inline">
+{
+  id: 'bob',
+  name: 'Bob Barrel',
+  password : 'mysecretpassword'
+}
+
+</pre>
+
+<h2 id="edit-user">Edit user</h2>
+<pre class="highlight shell"><code><span class="c"># edit team</span>
+curl -X PATCH <span class="s2">"https://hostname/api/users/bob"</span> <span class="se">\</span>
+ -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
+  -d <span class="s2">"{</span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Bob Maier</span><span class="se">\"</span><span class="s2">}"</span>
+
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<p>Edit an existing user.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PATCH https://hostname/api/users/:user</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>Optional. The name of the user</td>
+</tr>
+<tr>
+<td>pass</td>
+<td>string</td>
+<td>Optional. Unencrypted password</td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-user">Delete user</h2>
+<pre class="highlight shell"><code><span class="c"># deletes a user</span>
+curl -X DELETE <span class="s2">"https://hostname/api/users/bob"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<p>Deletes an existing user.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">DELETE https://hostname/api/users/:user</code></p>
+
+<h1 id="environments">Environments</h1>
+
+<h2 id="list-all-environments">List all environments</h2>
+<pre class="highlight shell"><code><span class="c"># lists all environments</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/envs"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"lastScan"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0001-01-01T00:00:00Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"complianceStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"patchlevelStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"unknownStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p>Returns all environments in our organization</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env</code></p>
+
+<h2 id="get-environment">Get environment</h2>
+<pre class="highlight shell"><code><span class="c"># lists all environments</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/envs/production"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"lastScan"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0001-01-01T00:00:00Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"complianceStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"patchlevelStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"unknownStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env/</code></p>
+
+<h2 id="create-environment">Create environment</h2>
+<pre class="highlight shell"><code><span class="c"># creates an environment</span>
+curl -v -X POST <span class="s2">"https://hostname/api/owners/acme/envs"</span> <span class="se">\</span>
+ -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
+  -d <span class="s2">"{ </span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">production</span><span class="se">\"</span><span class="s2">}"</span>
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://hostname/api/owners/:user/envs/</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td> Required. The identifier for the environment</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+Environments can be created for users and organizations. Use the user id or organization id for `:user`.
+</aside>
+
+<h2 id="delete-environment">Delete environment</h2>
+<pre class="highlight shell"><code><span class="c"># deletes an environments</span>
+curl -X DELETE <span class="s2">"https://hostname/api/owners/acme/envs/production"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">DELETE https://hostname/api/owners/:user/envs/:env</code></p>
+
+<h1 id="nodes">Nodes</h1>
+
+<h2 id="get-environments-nodes">Get environments nodes</h2>
+<pre class="highlight shell"><code><span class="c"># lists all environments</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.100.200"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"environment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"hostname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.100.200"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"loginMethod"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ssh"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"loginUser"</span><span class="p">:</span><span class="w"> </span><span class="s2">"root"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"loginPassword"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"loginKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sshpublickey"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"loginPort"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"disableSudo"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"sudoOptions"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"sudoPassword"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"lastScan"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0001-01-01T00:00:00Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"lastScanID"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"os_family"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"os_release"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"os_arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"complianceStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"patchlevelStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"unknownStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env/nodes</code></p>
+
+<h2 id="get-specific-nodes">Get specific nodes</h2>
+<pre class="highlight shell"><code><span class="c"># lists all environments</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/192.168.100.200"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.100.200"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"environment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"hostname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.100.200"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"loginMethod"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ssh"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"loginUser"</span><span class="p">:</span><span class="w"> </span><span class="s2">"root"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"loginPassword"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"loginKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sshpublickey"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"loginPort"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"disableSudo"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"sudoOptions"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"sudoPassword"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"lastScan"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0001-01-01T00:00:00Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"lastScanID"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"os_family"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"os_release"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"os_arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"complianceStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"patchlevelStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"unknownStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env/nodes/:node</code></p>
+
+<h2 id="create-node">Create node</h2>
+<pre class="highlight shell"><code><span class="c"># creates an node</span>
+curl -X POST <span class="s2">"https://hostname/api/owners/acme/envs/nodes"</span> <span class="se">\</span>
+ -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
+  -d <span class="s2">"{</span><span class="se">\"</span><span class="s2">loginUser</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">root</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">loginMethod</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">sshKey</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">loginKey</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">sshpublickey</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">hostname</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">192.168.100.200</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">loginPort</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">default</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">192.168.100.200:default</span><span class="se">\"</span><span class="s2">}"</span>
+</code></pre>
+
+<blockquote>
+<p>uses the following json</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"loginUser"</span><span class="p">:</span><span class="w"> </span><span class="s2">"root"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"loginMethod"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sshKey"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"loginKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nameofkey"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"hostname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.100.200"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"loginPort"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.100.200:default"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://hostname/api/owners/:user/envs/:env/nodes</code></p>
+
+<h2 id="get-compliance-level-for-a-node">Get compliance level for a node</h2>
+<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/192.168.100.200"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.100.200"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"environment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"hostname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.59.103"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"loginMethod"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sshKey"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"loginUser"</span><span class="p">:</span><span class="w"> </span><span class="s2">"root"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"loginPassword"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"loginKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/root/.ssh/id_rsa"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"loginPort"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11023"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"lastScan"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-11T14:18:40.565928775Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"lastScanID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"90def607-1688-40f5-5a4c-161c51fd8aac"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"os_family"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ubuntu"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"os_release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14.04"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"os_arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x86_64"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="mi">53</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"failure"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"partial"</span><span class="p">:</span><span class="w"> </span><span class="mi">53</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"unknown"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env/nodes/:node</code></p>
+
+<h1 id="scans">Scans</h1>
+
+<h2 id="list-all-scans-reports">List all scans reports</h2>
+<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/scans"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a74566b9-b527-437f-480f-e56c5b8a1791"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-05-22T01:10:37.133367688Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-05-22T01:10:42.491573741Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"nodeCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"complianceProfiles"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"patchlevelProfiles"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"complianceStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"patchlevelStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"unknownStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/scans</code></p>
+
+<aside class="notice">
+All scan reports belong to a user or organization. Scans can be configured to scan nodes from various environments.
+</aside>
+
+<h2 id="get-scan-details">Get scan details</h2>
+<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f5-5a4c-161c51fd8aac"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a74566b9-b527-437f-480f-e56c5b8a1791"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-05-22T01:10:37.133367688Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-05-22T01:10:42.491573741Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"nodeCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"complianceProfiles"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"patchlevelProfiles"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"complianceStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"patchlevelStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"unknownStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"complianceSummary"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">43</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"critical"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"skipped"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">45</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"patchlevelSummary"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"critical"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"unknown"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/scans/:scanid</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td>scan id</td>
+</tr>
+<tr>
+<td>owner</td>
+<td>string</td>
+<td>scan owner</td>
+</tr>
+<tr>
+<td>start</td>
+<td>iso date</td>
+<td>scan start</td>
+</tr>
+<tr>
+<td>end</td>
+<td>iso date</td>
+<td>scan end</td>
+</tr>
+<tr>
+<td>nodeCount</td>
+<td> int</td>
+<td>amount of tested nodes</td>
+</tr>
+<tr>
+<td>checkCount</td>
+<td>int</td>
+<td>amount of tested checks</td>
+</tr>
+<tr>
+<td>success</td>
+<td>float</td>
+<td>amount of successful checks</td>
+</tr>
+<tr>
+<td>critical</td>
+<td>float</td>
+<td>amount of failed checks</td>
+</tr>
+<tr>
+<td>major</td>
+<td>float</td>
+<td>amount of checks with major errors</td>
+</tr>
+<tr>
+<td>minor</td>
+<td>float</td>
+<td>amount of checks with minor errors</td>
+</tr>
+<tr>
+<td>skipped</td>
+<td>float</td>
+<td>amount of nodes with skipped rules</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-executed-compliance-checks-for-scan">Get executed compliance checks for scan</h2>
+<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f5-5a4c-161c51fd8aac/rules"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"vulcanosec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"linux"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"vulcanosec/linux/basic-1"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"log"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"complianceStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"unknownStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"vulcanosec/linux/fs-1"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"log"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"complianceStatus"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"unknownStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+</span><span class="err">...</span><span class="w">
+
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/scans/:scanid/rules</code></p>
+
+<h3 id="return-values">Return values</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>log</td>
+<td>string</td>
+<td> rule description</td>
+</tr>
+<tr>
+<td>complianceStatus</td>
+<td>int</td>
+<td>CVSS range</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-nodes-for-scan">Get nodes for scan</h2>
+<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f5-5a4c-161c51fd8aac/nodes"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"environment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"node"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.59.107:11024"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"complianceStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"patchlevelStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"unknownStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"os_family"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"os_release"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"os_arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"complianceSummary"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">43</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"critical"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"skipped"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">45</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"patchlevelSummary"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"critical"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"unknown"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"patchStatus"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/scans/:scanid/nodes</code></p>
+
+<h2 id="get-compliance-checks-result-for-scan">Get compliance checks result for scan</h2>
+<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f5-5a4c-161c51fd8aac/envs/production/nodes/192.168.100.200/compliance"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"profileOwner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"profileID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"linux"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"rule"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec/linux/basic-1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"impact"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"failures"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"skipped"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"log"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Path \"/etc/ssh\" should be directory"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="err">...</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/scans/:scanid/envs/:env/nodes/:node/compliance</code></p>
+
+<h3 id="return-values">Return values</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>rule</td>
+<td>string</td>
+<td>rule identifier</td>
+</tr>
+<tr>
+<td>impact</td>
+<td>float</td>
+<td> value between 0 and 1</td>
+</tr>
+<tr>
+<td>failure</td>
+<td>int</td>
+<td>-1=skipped, 0=no failure, 1+ amount of failures per rule</td>
+</tr>
+<tr>
+<td>log</td>
+<td>string</td>
+<td> error log</td>
+</tr>
+<tr>
+<td>profileOwner</td>
+<td>string</td>
+<td> owner of compliance checks</td>
+</tr>
+<tr>
+<td>profileID</td>
+<td>string</td>
+<td>compliance checks identifier</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-patch-level-results-for-scan">Get patch level results  for scan</h2>
+<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f5-5a4c-161c51fd8aac/envs/production/nodes/192.168.100.200/patches"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"criticality"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"apt"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.8.16~exp12ubuntu10.24"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amd64"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ubuntu:12.04/precise-updates"</span><span class="w">
+  </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"criticality"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"libapt-pkg4.12"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.8.16~exp12ubuntu10.24"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amd64"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ubuntu:12.04/precise-updates"</span><span class="w">
+  </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"criticality"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"libldap-2.4-2"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.4.28-1.1ubuntu4.5"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amd64"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ubuntu:12.04/precise-updates"</span><span class="w">
+  </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"criticality"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"libssl1.0.0"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.1-4ubuntu5.31"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amd64"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ubuntu:12.04/precise-updates"</span><span class="w">
+  </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"criticality"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"openssl"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.1-4ubuntu5.31"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amd64"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ubuntu:12.04/precise-updates"</span><span class="w">
+  </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"criticality"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"upstart"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.5-0ubuntu7.3"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amd64"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ubuntu:12.04/precise-updates"</span><span class="w">
+</span><span class="p">}]</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/scans/:scanid/envs/:env/nodes/:node/patches</code></p>
+
+<h3 id="return-values">Return values</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>criticality</td>
+<td>integer</td>
+<td> 0-10 <a href="https://en.wikipedia.org/wiki/CVSS">CVSS score</a></td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td> package name</td>
+</tr>
+<tr>
+<td>version</td>
+<td>string</td>
+<td> package version</td>
+</tr>
+<tr>
+<td>arch</td>
+<td>string</td>
+<td> cpu architecture</td>
+</tr>
+<tr>
+<td>repo</td>
+<td>string</td>
+<td> package repository</td>
+</tr>
+</tbody></table>
+
+<h2 id="execute-a-new-scan">Execute a new scan</h2>
+<pre class="highlight shell"><code>
+curl -X POST <span class="s2">"https://hostname/api/owners/acme/scans"</span> <span class="se">\</span>
+ -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
+  -d <span class="s2">"{</span><span class="se">\"</span><span class="s2">profiles</span><span class="se">\"</span><span class="s2">:[{</span><span class="se">\"</span><span class="s2">owner</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">vulcanosec</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">profile</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">linux</span><span class="se">\"</span><span class="s2">},{</span><span class="se">\"</span><span class="s2">owner</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">vulcanosec</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">profile</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">ssh</span><span class="se">\"</span><span class="s2">}],</span><span class="se">\"</span><span class="s2">environments</span><span class="se">\"</span><span class="s2">:[{</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">production</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">nodes</span><span class="se">\"</span><span class="s2">:[</span><span class="se">\"</span><span class="s2">192.168.100.200</span><span class="se">\"</span><span class="s2">]}],</span><span class="se">\"</span><span class="s2">scanPatchlevel</span><span class="se">\"</span><span class="s2">:true}"</span>
+
+</code></pre>
+
+<blockquote>
+<p>The json request looks as follows</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"profiles"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+        </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"profile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"linux"</span><span class="w">
+    </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"profile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ssh"</span><span class="w">
+    </span><span class="p">}],</span><span class="w">
+    </span><span class="s2">"environments"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"nodes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"192.168.100.200"</span><span class="p">]</span><span class="w">
+    </span><span class="p">}],</span><span class="w">
+    </span><span class="s2">"scanPatchlevel"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"57130678-1a1f-405d-70bf-fe570a25621e"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://hostname/api/owners/acme/scans</code></p>
+
+<h3 id="arguments">Arguments</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>profiles</td>
+<td>array</td>
+<td> list of selected profiles</td>
+</tr>
+<tr>
+<td>environment</td>
+<td>array</td>
+<td> list of environments and selected nodes</td>
+</tr>
+<tr>
+<td>scanPatchlevel</td>
+<td>boolean</td>
+<td> activate package scans</td>
+</tr>
+</tbody></table>
+
+<h3 id="return-values">Return values</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td> scan identifier</td>
+</tr>
+</tbody></table>
+
+<h1 id="errors">Errors</h1>
+
+<p>The VulcanoSec API uses conventional HTTP response codes to highlight a request success or failure. The following codes are used:</p>
+
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>OK &ndash; Everything worked as expected.</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad Request &ndash; In most cases a required parameter is missing.</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized &ndash; No valid API key provided.</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden &ndash; You do not have the permission to execute the request</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found &ndash; The specified kitten could not be found</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Too Many Requests &ndash; You reached the rate limit.</td>
+</tr>
+<tr>
+<td>500, 501, 502, 503</td>
+<td>Server Error &ndash; Something went wrong.</td>
+</tr>
+</tbody></table>
+
+<p>In general, 2xx codes indicate success, 4xx indicate a request error (e.g. data is missing) and 5xx indicate an error with VulcanoSec API.</p>
+
+      </div>
+      <div class="dark-box">
+      </div>
+    </div>
+  </body>
+</html>
