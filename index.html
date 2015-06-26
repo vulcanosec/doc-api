@@ -884,7 +884,7 @@ curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/1
 curl -X POST <span class="s2">"https://hostname/api/owners/acme/envs/nodes"</span> <span class="se">\</span>
  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
-  -d <span class="s2">"{</span><span class="se">\"</span><span class="s2">loginUser</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">root</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">loginMethod</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">sshKey</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">loginKey</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">sshpublickey</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">hostname</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">192.168.100.200</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">loginPort</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">default</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">192.168.100.200:default</span><span class="se">\"</span><span class="s2">}"</span>
+  -d <span class="s2">"{</span><span class="se">\"</span><span class="s2">loginUser</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">root</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">loginMethod</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">ssh</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">loginKey</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">acme/nameofkey</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">hostname</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">192.168.100.200</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">loginPort</span><span class="se">\"</span><span class="s2">:22,</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">192.168.100.200</span><span class="se">\"</span><span class="s2">}"</span>
 </code></pre>
 
 <blockquote>
@@ -892,11 +892,11 @@ curl -X POST <span class="s2">"https://hostname/api/owners/acme/envs/nodes"</spa
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"loginUser"</span><span class="p">:</span><span class="w"> </span><span class="s2">"root"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"loginMethod"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sshKey"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"loginKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nameofkey"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"loginMethod"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ssh"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"loginKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme/nameofkey"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"hostname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.100.200"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"loginPort"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.100.200:default"</span><span class="w">
+    </span><span class="s2">"loginPort"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.100.200"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
@@ -910,41 +910,106 @@ curl -X POST <span class="s2">"https://hostname/api/owners/acme/envs/nodes"</spa
 
 <p><code class="prettyprint">POST https://hostname/api/owners/:user/envs/:env/nodes</code></p>
 
-<h2 id="get-compliance-level-for-a-node">Get compliance level for a node</h2>
-<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/192.168.100.200"</span> <span class="se">\</span>
+<h2 id="get-node-status">Get node status</h2>
+<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
 </code></pre>
 
 <blockquote>
 <p>It returns</p>
 </blockquote>
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.100.200"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"environment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"hostname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.59.103"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"loginMethod"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sshKey"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"loginUser"</span><span class="p">:</span><span class="w"> </span><span class="s2">"root"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"loginPassword"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"loginKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/root/.ssh/id_rsa"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"loginPort"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11023"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"lastScan"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-11T14:18:40.565928775Z"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"lastScanID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"90def607-1688-40f5-5a4c-161c51fd8aac"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"os_family"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ubuntu"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"os_release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14.04"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"os_arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x86_64"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="mi">53</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"failure"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"partial"</span><span class="p">:</span><span class="w"> </span><span class="mi">53</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"unknown"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
-</span><span class="p">}</span><span class="w">
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"complianceStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"disableSudo"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"environment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"hostname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.100.200"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.100.200"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"lastScan"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-26T15:17:30.945183863Z"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"lastScanID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1170660a-7e50-4c3a-6da7-eaa510e2f0a9"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"loginKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin/vagrant"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"loginMethod"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ssh"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"loginPassword"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"loginPort"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"loginUser"</span><span class="p">:</span><span class="w"> </span><span class="s2">"root"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"os_arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x86_64"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"os_family"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ubuntu"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"os_release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14.04"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"patchlevelStatus"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.045643155</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"sudoOptions"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"sudoPassword"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"unknownStatus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
 </span></code></pre>
 
 <h3 id="http-request">HTTP Request</h3>
 
 <p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env/nodes/:node</code></p>
+
+<h2 id="get-compliance-level-of-node">Get compliance level of node</h2>
+<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/192.168.100.200/compliance"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"failures"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"impact"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"log"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Linux kernel parameter \"net.ipv4.tcp_syncookies\" value should eq 1"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"profileID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"linux"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"profileOwner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"rule"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec/linux/sysctl-ipv4-9.2"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"skipped"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+    </span><span class="p">},</span><span class="w"> 
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"failures"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"impact"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"log"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Path \"/tmp\" should be mounted"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"profileID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"linux"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"profileOwner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"rule"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec/linux/fs-1"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"skipped"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+    </span><span class="p">},</span><span class="w"> 
+</span><span class="err">...</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env/nodes/:node/compliance</code></p>
+
+<h2 id="get-patch-level-of-node">Get patch level of node</h2>
+<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/192.168.100.200/patches"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amd64"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"criticality"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"installedVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gcc-4.8-base"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ubuntu:14.04/trusty-updates"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"deb"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4.8.4-2ubuntu1~14.04"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+</span><span class="err">...</span><span class="w">
+</span><span class="p">]</span><span class="w">
+
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env/nodes/:node/patches</code></p>
 
 <h1 id="scans">Scans</h1>
 
