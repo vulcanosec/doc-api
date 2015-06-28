@@ -1082,13 +1082,7 @@ curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/1
 <blockquote>
 <p>It returns</p>
 </blockquote>
-<pre class="highlight http"><code><span class="err">Status: 200
-</span></code></pre>
-
-<blockquote>
-<p>Or in case of an error</p>
-</blockquote>
-<pre class="highlight http"><code><span class="err">Status: 402
+<pre class="highlight http"><code><span class="err">Status: 200 (success) or 402 (error)
 </span></code></pre>
 
 <h3 id="http-request">HTTP Request</h3>
@@ -1110,6 +1104,64 @@ curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/1
 <td> Request Failed &ndash; Node is not reachable.</td>
 </tr>
 </tbody></table>
+
+<p>In case of an error the request returns one of the following error messages:</p>
+
+<h4 id="connection-timeout">Connection Timeout</h4>
+
+<pre class="inline">
+{
+  "error"=>"connection timed out",
+  "message"=>"Failed to connect to {destination}, connection timed out."
+}
+</pre>
+
+<h4 id="connection-refused">Connection Refused</h4>
+
+<pre class="inline">
+{
+  "error"=>"connection refused",
+  "message"=>"Failed to connect to {destination}, connection refused."
+}
+</pre>
+
+<h4 id="authentication-failed">Authentication Failed</h4>
+
+<pre class="inline">
+{
+  "error"=>"authentication failed",
+  "message"=>"Authentication failed for {destination}"
+}
+</pre>
+
+<h4 id="sudo-password-required">Sudo Password Required</h4>
+
+<pre class="inline">
+{
+  "error"=>"sudo password required",
+  "message"=>"Failed to run commands on {destination}: "+
+  "The node is configured to use sudo, but sudo requires a password to run commands."
+}
+</pre>
+
+<h4 id="wrong-sudo-password">Wrong Sudo Password</h4>
+
+<pre class="inline">
+{
+  "error"=>"wrong sudo password",
+  "message"=>"Failed to run commands on {destination}: Sudo password is incorrect."
+}
+</pre>
+
+<h4 id="cannot-use-sudo">Cannot Use Sudo</h4>
+
+<pre class="inline">
+{
+  "error"=>"no sudo",
+  "message"=>"Failed to run commands on {destination}: "+
+  "Cannot use sudo, please deactivate it or configure sudo for this user."
+}
+</pre>
 
 <h2 id="get-compliance-level-of-node">Get compliance level of node</h2>
 <pre class="highlight shell"><code><span class="c"># shows node compliance state</span>
