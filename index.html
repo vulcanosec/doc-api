@@ -52,12 +52,6 @@ curl -X POST https://hostname/api/oauth/token <span class="se">\</span>
   -d <span class="s2">"grant_type=client_credentials"</span>
 </code></pre>
 
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">POST https://hostname/api/oauth/token</code></p>
-
-<p>You need to send a &lsquo;Authorization: Basic base64encodedpassword&rsquo; header with your username and password in order to retrieve a valid api token.</p>
-
 <blockquote>
 <p>It returns</p>
 </blockquote>
@@ -67,6 +61,12 @@ curl -X POST https://hostname/api/oauth/token <span class="se">\</span>
   </span><span class="s2">"token_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec token"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://hostname/api/oauth/token</code></p>
+
+<p>You need to send a &lsquo;Authorization: Basic base64encodedpassword&rsquo; header with your username and password in order to retrieve a valid api token.</p>
 
 <p>VulcanoSec uses API token to allow access to the API and expects for the API key to be included as <a href="http://en.wikipedia.org/wiki/Basic_access_authentication">HTTP Basic Authentication</a> in all API requests to the server in a header that looks like the following:</p>
 
@@ -248,7 +248,7 @@ curl -X DELETE <span class="s2">"https://hostname/api/orgs/acme"</span> <span cl
 
 <p><code class="prettyprint">DELETE https://hostname/api/orgs/:org</code></p>
 
-<aside class="warning">By deleting an organization you delete assigned teams, nodes, environments and scan reports, too.</aside>
+<aside class="warning">By deleting an organization, you delete assigned teams, nodes, environments and scan reports.</aside>
 
 <h1 id="teams">Teams</h1>
 
@@ -432,7 +432,7 @@ curl -X DELETE <span class="s2">"https://hostname/api/orgs/acme/teams/audit"</sp
 Be aware, that the `owners` team cannot be deleted.
 </aside>
 
-<h2 id="team-permissions">Team Permissions</h2>
+<h2 id="edit-team-permissions">Edit Team Permissions</h2>
 <pre class="highlight shell"><code><span class="c"># edit team</span>
 curl -X PATCH <span class="s2">"https://hostname/api/orgs/acme/teams/audit"</span> <span class="se">\</span>
  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
@@ -693,6 +693,129 @@ curl -X DELETE <span class="s2">"https://hostname/api/users/bob"</span> <span cl
 
 <p><code class="prettyprint">DELETE https://hostname/api/users/:user</code></p>
 
+<h1 id="key-pairs">Key Pairs</h1>
+
+<h2 id="list-key-pairs">List Key Pairs</h2>
+<pre class="highlight shell"><code><span class="c"># lists key pairs for user or organization</span>
+curl  <span class="s2">"https://hostname/api/owners/admin/keys"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[{</span><span class="w">
+    </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vagrant"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vagrant"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"public"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"</span><span class="w">
+</span><span class="p">}]</span><span class="w">
+</span></code></pre>
+
+<p>List all key pairs with public keys for an existing user or organization</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/keys</code></p>
+
+<h2 id="add-key-pair">Add Key Pair</h2>
+<pre class="highlight plaintext"><code># creates a new user
+curl -X POST "https://hostname/api/owners/admin/keys/" \
+ -H "Content-Type: application/json" \
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg==: \
+  -d "{ \"id\": \"vagrant\", \"name\": \"vagrant\", \"private\": \"...\", \"public\": \"...\"}"
+</code></pre>
+
+<blockquote>
+<p>uses the following json</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vagrant"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vagrant"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"private"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzI\nw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoP\nkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2\nhMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NO\nTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcW\nyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQIBIwKCAQEA4iqWPJXtzZA68mKd\nELs4jJsdyky+ewdZeNds5tjcnHU5zUYE25K+ffJED9qUWICcLZDc81TGWjHyAqD1\nBw7XpgUwFgeUJwUlzQurAv+/ySnxiwuaGJfhFM1CaQHzfXphgVml+fZUvnJUTvzf\nTK2Lg6EdbUE9TarUlBf/xPfuEhMSlIE5keb/Zz3/LUlRg8yDqz5w+QWVJ4utnKnK\niqwZN0mwpwU7YSyJhlT4YV1F3n4YjLswM5wJs2oqm0jssQu/BT0tyEXNDYBLEF4A\nsClaWuSJ2kjq7KhrrYXzagqhnSei9ODYFShJu8UWVec3Ihb5ZXlzO6vdNQ1J9Xsf\n4m+2ywKBgQD6qFxx/Rv9CNN96l/4rb14HKirC2o/orApiHmHDsURs5rUKDx0f9iP\ncXN7S1uePXuJRK/5hsubaOCx3Owd2u9gD6Oq0CsMkE4CUSiJcYrMANtx54cGH7Rk\nEjFZxK8xAv1ldELEyxrFqkbE4BKd8QOt414qjvTGyAK+OLD3M2QdCQKBgQDtx8pN\nCAxR7yhHbIWT1AH66+XWN8bXq7l3RO/ukeaci98JfkbkxURZhtxV/HHuvUhnPLdX\n3TwygPBYZFNo4pzVEhzWoTtnEtrFueKxyc3+LjZpuo+mBlQ6ORtfgkr9gBVphXZG\nYEzkCD3lVdl8L4cw9BVpKrJCs1c5taGjDgdInQKBgHm/fVvv96bJxc9x1tffXAcj\n3OVdUN0UgXNCSaf/3A/phbeBQe9xS+3mpc4r6qvx+iy69mNBeNZ0xOitIjpjBo2+\ndBEjSBwLk5q5tJqHmy/jKMJL4n9ROlx93XS+njxgibTvU6Fp9w+NOFD/HvxB3Tcz\n6+jJF85D5BNAG3DBMKBjAoGBAOAxZvgsKN+JuENXsST7F89Tck2iTcQIT8g5rwWC\nP9Vt74yboe2kDT531w8+egz7nAmRBKNM751U/95P9t88EDacDI/Z2OwnuFQHCPDF\nllYOUI+SpLJ6/vURRbHSnnn8a/XG+nzedGH5JGqEJNQsz+xT2axM0/W/CRknmGaJ\nkda/AoGANWrLCz708y7VYgAtW2Uf1DPOIYMdvo6fxIB5i9ZfISgcJ/bbCUkFrhoH\n+vq/5CIWxCPp0f85R4qxxQ5ihxJ0YDQT9Jpx4TMss4PSavPaBH3RXow5Ohe+bYoQ\nNE5OgEXk2wVfZczCZpigBKbKZHNYcelXtTt/nP3rsCuGcM4h53s=\n-----END RSA PRIVATE KEY-----"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"public"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<p>Adds a new keypair to an existing user or organization</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://hostname/api/owners/:user/keys</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td>identifier of key</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>user readable name of the key</td>
+</tr>
+<tr>
+<td>public</td>
+<td>string</td>
+<td>public key in openssh format</td>
+</tr>
+<tr>
+<td>private</td>
+<td>string</td>
+<td>private key in openssh format</td>
+</tr>
+</tbody></table>
+
+<h2 id="edit-key-pair">Edit Key Pair</h2>
+<pre class="highlight shell"><code><span class="c"># edit a key pair</span>
+curl -X PATCH <span class="s2">"https://hostname/api/owners/admin/keys/vagrant"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
+ -d <span class="s2">"{</span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">My Vagrant Key</span><span class="se">\"</span><span class="s2">}"</span>
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<p>Edits an existing key pair from a user or organization</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PATCH https://hostname/api/owners/:user/keys/:keyname</code></p>
+
+<h2 id="delete-key-pair">Delete Key Pair</h2>
+<pre class="highlight shell"><code><span class="c"># deletes a key pair</span>
+curl -X DELETE <span class="s2">"https://hostname/api/owners/admin/keys/vagrant"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<p>Removes an existing key pair from a user or organization</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">DELETE https://hostname/api/owners/:user/keys/:keyname</code></p>
+
 <h1 id="environments">Environments</h1>
 
 <h2 id="list-all-environments">List all environments</h2>
@@ -802,7 +925,7 @@ curl -X DELETE <span class="s2">"https://hostname/api/owners/acme/envs/productio
 <h1 id="nodes">Nodes</h1>
 
 <h2 id="get-environments-nodes">Get environments nodes</h2>
-<pre class="highlight shell"><code><span class="c"># lists all environments</span>
+<pre class="highlight shell"><code><span class="c"># lists all nodes in environment</span>
 curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
 </code></pre>
@@ -842,7 +965,7 @@ curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes"<
 <p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env/nodes</code></p>
 
 <h2 id="get-specific-nodes">Get specific nodes</h2>
-<pre class="highlight shell"><code><span class="c"># lists all environments</span>
+<pre class="highlight shell"><code><span class="c"># get node overview</span>
 curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/192.168.100.200"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
 </code></pre>
@@ -880,7 +1003,7 @@ curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/1
 <p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env/nodes/:node</code></p>
 
 <h2 id="create-node">Create node</h2>
-<pre class="highlight shell"><code><span class="c"># creates an node</span>
+<pre class="highlight shell"><code><span class="c"># creates a node</span>
 curl -X POST <span class="s2">"https://hostname/api/owners/acme/envs/nodes"</span> <span class="se">\</span>
  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
@@ -911,7 +1034,8 @@ curl -X POST <span class="s2">"https://hostname/api/owners/acme/envs/nodes"</spa
 <p><code class="prettyprint">POST https://hostname/api/owners/:user/envs/:env/nodes</code></p>
 
 <h2 id="get-node-status">Get node status</h2>
-<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes"</span> <span class="se">\</span>
+<pre class="highlight shell"><code><span class="c"># shows node status</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
 </code></pre>
 
@@ -949,8 +1073,47 @@ curl -X POST <span class="s2">"https://hostname/api/owners/acme/envs/nodes"</spa
 
 <p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env/nodes/:node</code></p>
 
+<h2 id="connectivity-check-for-node">Connectivity check for node</h2>
+<pre class="highlight shell"><code><span class="c"># shows node patch state</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/192.168.100.200/connectivity"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 200
+</span></code></pre>
+
+<blockquote>
+<p>Or in case of an error</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 402
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env/nodes/:node/connectivity</code></p>
+
+<table><thead>
+<tr>
+<th>Response Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>OK &ndash; Everything worked as expected.</td>
+</tr>
+<tr>
+<td>402</td>
+<td> Request Failed &ndash; Node is not reachable.</td>
+</tr>
+</tbody></table>
+
 <h2 id="get-compliance-level-of-node">Get compliance level of node</h2>
-<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/192.168.100.200/compliance"</span> <span class="se">\</span>
+<pre class="highlight shell"><code><span class="c"># shows node compliance state</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/192.168.100.200/compliance"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
 </code></pre>
 
@@ -985,7 +1148,8 @@ curl -X POST <span class="s2">"https://hostname/api/owners/acme/envs/nodes"</spa
 <p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env/nodes/:node/compliance</code></p>
 
 <h2 id="get-patch-level-of-node">Get patch level of node</h2>
-<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/192.168.100.200/patches"</span> <span class="se">\</span>
+<pre class="highlight shell"><code><span class="c"># shows node patch state</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/192.168.100.200/patches"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
 </code></pre>
 
@@ -1014,7 +1178,8 @@ curl -X POST <span class="s2">"https://hostname/api/owners/acme/envs/nodes"</spa
 <h1 id="scans">Scans</h1>
 
 <h2 id="list-all-scans-reports">List all scans reports</h2>
-<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/scans"</span> <span class="se">\</span>
+<pre class="highlight shell"><code><span class="c"># list all scans</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/scans"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
 </code></pre>
 
@@ -1046,7 +1211,8 @@ All scan reports belong to a user or organization. Scans can be configured to sc
 </aside>
 
 <h2 id="get-scan-details">Get scan details</h2>
-<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f5-5a4c-161c51fd8aac"</span> <span class="se">\</span>
+<pre class="highlight shell"><code><span class="c"># get scan details</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f5-5a4c-161c51fd8aac"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
 </code></pre>
 
@@ -1120,29 +1286,24 @@ All scan reports belong to a user or organization. Scans can be configured to sc
 <td>amount of tested nodes</td>
 </tr>
 <tr>
-<td>checkCount</td>
-<td>int</td>
-<td>amount of tested checks</td>
-</tr>
-<tr>
 <td>success</td>
 <td>float</td>
-<td>amount of successful checks</td>
+<td>amount of successful rules</td>
 </tr>
 <tr>
 <td>critical</td>
 <td>float</td>
-<td>amount of failed checks</td>
+<td>amount of failed rules</td>
 </tr>
 <tr>
 <td>major</td>
 <td>float</td>
-<td>amount of checks with major errors</td>
+<td>amount of rules with major errors</td>
 </tr>
 <tr>
 <td>minor</td>
 <td>float</td>
-<td>amount of checks with minor errors</td>
+<td>amount of rules with minor errors</td>
 </tr>
 <tr>
 <td>skipped</td>
@@ -1151,8 +1312,9 @@ All scan reports belong to a user or organization. Scans can be configured to sc
 </tr>
 </tbody></table>
 
-<h2 id="get-executed-compliance-checks-for-scan">Get executed compliance checks for scan</h2>
-<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f5-5a4c-161c51fd8aac/rules"</span> <span class="se">\</span>
+<h2 id="get-executed-compliance-rules-for-scan">Get executed compliance rules for scan</h2>
+<pre class="highlight shell"><code><span class="c"># shows executed compliance rules for scan</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f5-5a4c-161c51fd8aac/rules"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
 </code></pre>
 
@@ -1202,7 +1364,8 @@ All scan reports belong to a user or organization. Scans can be configured to sc
 </tbody></table>
 
 <h2 id="get-nodes-for-scan">Get nodes for scan</h2>
-<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f5-5a4c-161c51fd8aac/nodes"</span> <span class="se">\</span>
+<pre class="highlight shell"><code><span class="c"># scanned nodes</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f5-5a4c-161c51fd8aac/nodes"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
 </code></pre>
 
@@ -1244,8 +1407,9 @@ All scan reports belong to a user or organization. Scans can be configured to sc
 
 <p><code class="prettyprint">GET https://hostname/api/owners/:user/scans/:scanid/nodes</code></p>
 
-<h2 id="get-compliance-checks-result-for-scan">Get compliance checks result for scan</h2>
-<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f5-5a4c-161c51fd8aac/envs/production/nodes/192.168.100.200/compliance"</span> <span class="se">\</span>
+<h2 id="get-compliance-results-for-each-node">Get compliance results for each node</h2>
+<pre class="highlight shell"><code><span class="c"># compliance rules results</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f5-5a4c-161c51fd8aac/envs/production/nodes/192.168.100.200/compliance"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
 </code></pre>
 
@@ -1290,7 +1454,7 @@ All scan reports belong to a user or organization. Scans can be configured to sc
 <td> value between 0 and 1</td>
 </tr>
 <tr>
-<td>failure</td>
+<td>failures</td>
 <td>int</td>
 <td>-1=skipped, 0=no failure, 1+ amount of failures per rule</td>
 </tr>
@@ -1302,16 +1466,16 @@ All scan reports belong to a user or organization. Scans can be configured to sc
 <tr>
 <td>profileOwner</td>
 <td>string</td>
-<td> owner of compliance checks</td>
+<td> owner of compliance rules</td>
 </tr>
 <tr>
 <td>profileID</td>
 <td>string</td>
-<td>compliance checks identifier</td>
+<td>compliance rules identifier</td>
 </tr>
 </tbody></table>
 
-<h2 id="get-patch-level-results-for-scan">Get patch level results  for scan</h2>
+<h2 id="get-patch-level-results-for-each-node">Get patch level results for each node</h2>
 <pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f5-5a4c-161c51fd8aac/envs/production/nodes/192.168.100.200/patches"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
 </code></pre>
@@ -1506,12 +1670,16 @@ curl -X POST <span class="s2">"https://hostname/api/owners/acme/scans"</span> <s
 <td>Unauthorized &ndash; No valid API key provided.</td>
 </tr>
 <tr>
+<td>402</td>
+<td> Request Failed &ndash; Parameters were valid but request failed.</td>
+</tr>
+<tr>
 <td>403</td>
 <td>Forbidden &ndash; You do not have the permission to execute the request</td>
 </tr>
 <tr>
 <td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
+<td>Not Found &ndash; The specified resource could not be found</td>
 </tr>
 <tr>
 <td>429</td>
