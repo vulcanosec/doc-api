@@ -1111,8 +1111,8 @@ curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/1
 
 <pre class="inline">
 {
-  "error"=>"connection timed out",
-  "message"=>"Failed to connect to {destination}, connection timed out."
+  "error":"connection timed out",
+  "message":"Failed to connect to {destination}, connection timed out."
 }
 </pre>
 
@@ -1120,8 +1120,8 @@ curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/1
 
 <pre class="inline">
 {
-  "error"=>"connection refused",
-  "message"=>"Failed to connect to {destination}, connection refused."
+  "error":"connection refused",
+  "message":"Failed to connect to {destination}, connection refused."
 }
 </pre>
 
@@ -1129,8 +1129,8 @@ curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/1
 
 <pre class="inline">
 {
-  "error"=>"authentication failed",
-  "message"=>"Authentication failed for {destination}"
+  "error":"authentication failed",
+  "message":"Authentication failed for {destination}"
 }
 </pre>
 
@@ -1138,8 +1138,8 @@ curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/1
 
 <pre class="inline">
 {
-  "error"=>"sudo password required",
-  "message"=>"Failed to run commands on {destination}: "+
+  "error":"sudo password required",
+  "message":"Failed to run commands on {destination}: "+
   "The node is configured to use sudo, but sudo requires a password to run commands."
 }
 </pre>
@@ -1148,8 +1148,8 @@ curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/1
 
 <pre class="inline">
 {
-  "error"=>"wrong sudo password",
-  "message"=>"Failed to run commands on {destination}: Sudo password is incorrect."
+  "error":"wrong sudo password",
+  "message":"Failed to run commands on {destination}: Sudo password is incorrect."
 }
 </pre>
 
@@ -1157,8 +1157,8 @@ curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/1
 
 <pre class="inline">
 {
-  "error"=>"no sudo",
-  "message"=>"Failed to run commands on {destination}: "+
+  "error":"no sudo",
+  "message":"Failed to run commands on {destination}: "+
   "Cannot use sudo, please deactivate it or configure sudo for this user."
 }
 </pre>
