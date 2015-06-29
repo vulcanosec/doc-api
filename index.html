@@ -1199,7 +1199,7 @@ curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/1
 
 <p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env/nodes/:node/compliance</code></p>
 
-<h2 id="get-patch-level-of-node">Get patch level of node</h2>
+<h2 id="get-available-patches-for-node">Get available patches for node</h2>
 <pre class="highlight shell"><code><span class="c"># shows node patch state</span>
 curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/192.168.100.200/patches"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
@@ -1212,11 +1212,11 @@ curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/1
     </span><span class="p">{</span><span class="w">
         </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amd64"</span><span class="p">,</span><span class="w"> 
         </span><span class="s2">"criticality"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> 
-        </span><span class="s2">"installedVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w"> 
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gcc-4.8-base"</span><span class="p">,</span><span class="w"> 
-        </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ubuntu:14.04/trusty-updates"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"installedVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.7.3-0ubuntu3.6"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python2.7-minimal"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ubuntu:12.04/precise-updates"</span><span class="p">,</span><span class="w"> 
         </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"deb"</span><span class="p">,</span><span class="w"> 
-        </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4.8.4-2ubuntu1~14.04"</span><span class="w">
+        </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.7.3-0ubuntu3.8"</span><span class="w">
     </span><span class="p">},</span><span class="w">
 </span><span class="err">...</span><span class="w">
 </span><span class="p">]</span><span class="w">
@@ -1226,6 +1226,39 @@ curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/1
 <h3 id="http-request">HTTP Request</h3>
 
 <p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env/nodes/:node/patches</code></p>
+
+<h2 id="get-installed-packages-of-node">Get installed packages of node</h2>
+<pre class="highlight shell"><code><span class="c"># shows node patch state</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/192.168.100.200/packages"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"add"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"adduser"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"deb"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.113ubuntu2"</span><span class="w">
+    </span><span class="p">},</span><span class="w"> 
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"commandline"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"apt"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"deb"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.8.16~exp12ubuntu10.24"</span><span class="w">
+    </span><span class="p">},</span><span class="w"> 
+</span><span class="err">...</span><span class="w">
+</span><span class="p">]</span><span class="w">
+
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env/nodes/:node/packages</code></p>
 
 <h1 id="scans">Scans</h1>
 
@@ -1527,7 +1560,7 @@ curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f
 </tr>
 </tbody></table>
 
-<h2 id="get-patch-level-results-for-each-node">Get patch level results for each node</h2>
+<h2 id="get-available-patches-for-each-node">Get available patches for each node</h2>
 <pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f5-5a4c-161c51fd8aac/envs/production/nodes/192.168.100.200/patches"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
 </code></pre>
@@ -1536,43 +1569,17 @@ curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f
 <p>It returns</p>
 </blockquote>
 <pre class="highlight json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"criticality"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"apt"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.8.16~exp12ubuntu10.24"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amd64"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ubuntu:12.04/precise-updates"</span><span class="w">
-  </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"criticality"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"libapt-pkg4.12"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.8.16~exp12ubuntu10.24"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amd64"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ubuntu:12.04/precise-updates"</span><span class="w">
-  </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"criticality"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"libldap-2.4-2"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.4.28-1.1ubuntu4.5"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amd64"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ubuntu:12.04/precise-updates"</span><span class="w">
-  </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"criticality"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"libssl1.0.0"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.1-4ubuntu5.31"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amd64"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ubuntu:12.04/precise-updates"</span><span class="w">
-  </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"criticality"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"openssl"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.1-4ubuntu5.31"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amd64"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ubuntu:12.04/precise-updates"</span><span class="w">
-  </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"criticality"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"upstart"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.5-0ubuntu7.3"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amd64"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ubuntu:12.04/precise-updates"</span><span class="w">
-</span><span class="p">}]</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amd64"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"criticality"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"installedVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.7.3-0ubuntu3.6"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python2.7-minimal"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ubuntu:12.04/precise-updates"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"deb"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.7.3-0ubuntu3.8"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+</span><span class="p">]</span><span class="w">
 </span></code></pre>
 
 <h3 id="http-request">HTTP Request</h3>
@@ -1615,6 +1622,37 @@ curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f
 </tr>
 </tbody></table>
 
+<h2 id="get-installed-packages-for-each-node">Get installed packages for each node</h2>
+<pre class="highlight shell"><code>curl  <span class="s2">"https://hostname/api/owners/acme/scans/90def607-1688-40f5-5a4c-161c51fd8aac/envs/production/nodes/192.168.100.200/packages"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"add"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"adduser"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"deb"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.113ubuntu2"</span><span class="w">
+    </span><span class="p">},</span><span class="w"> 
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"commandline"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"apt"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"repo"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"deb"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.8.16~exp12ubuntu10.24"</span><span class="w">
+    </span><span class="p">},</span><span class="w"> 
+    </span><span class="err">...</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/scans/:scanid/envs/:env/nodes/:node/packages</code></p>
+
 <h2 id="execute-a-new-scan">Execute a new scan</h2>
 <pre class="highlight shell"><code>
 curl -X POST <span class="s2">"https://hostname/api/owners/acme/scans"</span> <span class="se">\</span>
@@ -1655,7 +1693,7 @@ curl -X POST <span class="s2">"https://hostname/api/owners/acme/scans"</span> <s
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST https://hostname/api/owners/acme/scans</code></p>
+<p><code class="prettyprint">POST https://hostname/api/owners/:user/scans</code></p>
 
 <h3 id="arguments">Arguments</h3>
 
@@ -1672,7 +1710,7 @@ curl -X POST <span class="s2">"https://hostname/api/owners/acme/scans"</span> <s
 <td> list of selected profiles</td>
 </tr>
 <tr>
-<td>environment</td>
+<td>environments</td>
 <td>array</td>
 <td> list of environments and selected nodes</td>
 </tr>
@@ -1696,6 +1734,209 @@ curl -X POST <span class="s2">"https://hostname/api/owners/acme/scans"</span> <s
 <td>id</td>
 <td>string</td>
 <td> scan identifier</td>
+</tr>
+</tbody></table>
+
+<h1 id="patch-runs">Patch Runs</h1>
+
+<h2 id="list-all-patchrun-reports">List all patchrun reports</h2>
+<pre class="highlight shell"><code><span class="c"># list all scans</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/patchruns"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-29T04:52:00.739010716Z"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"failureCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"210a994c-8bef-4c89-4a1c-09418e19d92c"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"nodeCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"progress"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"skipCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-29T04:51:39.739010716Z"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"successCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/patchruns</code></p>
+
+<h3 id="return-values">Return values</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td>id of patch run</td>
+</tr>
+<tr>
+<td>start</td>
+<td>date</td>
+<td> iso time</td>
+</tr>
+<tr>
+<td>end</td>
+<td>date</td>
+<td> iso time</td>
+</tr>
+<tr>
+<td>nodeCount</td>
+<td>int</td>
+<td> amount of applied nodes</td>
+</tr>
+<tr>
+<td>successCount</td>
+<td>int</td>
+<td> amount of successful patches</td>
+</tr>
+<tr>
+<td>failureCount</td>
+<td>int</td>
+<td> amount of patches with errors</td>
+</tr>
+<tr>
+<td>skipCount</td>
+<td>int</td>
+<td>amount patches that have not been applied</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-patch-run-details">Get patch run details</h2>
+<pre class="highlight shell"><code><span class="c"># get scan details</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/patchruns/210a994c-8bef-4c89-4a1c-09418e19d92c"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0001-01-01T00:00:00Z"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"failureCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"210a994c-8bef-4c89-4a1c-09418e19d92c"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"nodeCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"progress"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"skipCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-29T04:51:39.739010716Z"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"successCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/patchruns/:patchrunid</code></p>
+
+<h2 id="list-nodes-of-patch-run">List nodes of patch run</h2>
+<pre class="highlight shell"><code><span class="c"># get scan details</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/patchruns/210a994c-8bef-4c89-4a1c-09418e19d92c/nodes"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"environment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"log"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"node"</span><span class="p">:</span><span class="w"> </span><span class="s2">"u14"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"packageCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"patchRunID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"210a994c-8bef-4c89-4a1c-09418e19d92c"</span><span class="p">,</span><span class="w"> 
+        </span><span class="s2">"successRate"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/patchruns/:patchrunid/nodes</code></p>
+
+<h2 id="execute-a-patch-run">Execute a patch run</h2>
+<pre class="highlight shell"><code>
+curl -X POST <span class="s2">"https://hostname/api/owners/acme/patchscans"</span> <span class="se">\</span>
+ -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
+ -d <span class="s2">"{</span><span class="se">\"</span><span class="s2">environments</span><span class="se">\"</span><span class="s2">:[{</span><span class="se">\"</span><span class="s2">nodes</span><span class="se">\"</span><span class="s2">:[</span><span class="se">\"</span><span class="s2">u14</span><span class="se">\"</span><span class="s2">],</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">production</span><span class="se">\"</span><span class="s2">}],</span><span class="se">\"</span><span class="s2">packages</span><span class="se">\"</span><span class="s2">:[{</span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">initscripts</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">version</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">2.88dsf-41ubuntu6.2</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">type</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">deb</span><span class="se">\"</span><span class="s2">}]}"</span>
+
+</code></pre>
+
+<blockquote>
+<p>The json request looks as follows</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"environments"</span><span class="p">:[{</span><span class="w">
+        </span><span class="s2">"nodes"</span><span class="p">:[</span><span class="s2">"u14"</span><span class="p">],</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="s2">"production"</span><span class="w">
+    </span><span class="p">}],</span><span class="w">
+    </span><span class="s2">"packages"</span><span class="p">:[{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"initscripts"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"version"</span><span class="p">:</span><span class="s2">"2.88dsf-41ubuntu6.2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="s2">"deb"</span><span class="w">
+    </span><span class="p">}]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"e896505a-ebdd-4a76-621a-b3a5108f811e"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://hostname/api/owners/:user/patchruns</code></p>
+
+<h3 id="arguments">Arguments</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>environments</td>
+<td>array</td>
+<td> list of environments and selected nodes</td>
+</tr>
+<tr>
+<td>packages</td>
+<td>array</td>
+<td> list of packages that should be updated</td>
+</tr>
+</tbody></table>
+
+<h3 id="return-values">Return values</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td>patchrun identifier</td>
 </tr>
 </tbody></table>
 
