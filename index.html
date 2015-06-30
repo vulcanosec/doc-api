@@ -1868,7 +1868,7 @@ curl  <span class="s2">"https://hostname/api/owners/acme/patchruns/210a994c-8bef
 
 <h2 id="execute-a-patch-run">Execute a patch run</h2>
 <pre class="highlight shell"><code>
-curl -X POST <span class="s2">"https://hostname/api/owners/acme/patchscans"</span> <span class="se">\</span>
+curl -X POST <span class="s2">"https://hostname/api/owners/acme/patchrun"</span> <span class="se">\</span>
  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
  -d <span class="s2">"{</span><span class="se">\"</span><span class="s2">environments</span><span class="se">\"</span><span class="s2">:[{</span><span class="se">\"</span><span class="s2">nodes</span><span class="se">\"</span><span class="s2">:[</span><span class="se">\"</span><span class="s2">u14</span><span class="se">\"</span><span class="s2">],</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">production</span><span class="se">\"</span><span class="s2">}],</span><span class="se">\"</span><span class="s2">packages</span><span class="se">\"</span><span class="s2">:[{</span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">initscripts</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">version</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">2.88dsf-41ubuntu6.2</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">type</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">deb</span><span class="se">\"</span><span class="s2">}]}"</span>
@@ -1901,7 +1901,7 @@ curl -X POST <span class="s2">"https://hostname/api/owners/acme/patchscans"</spa
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST https://hostname/api/owners/:user/patchruns</code></p>
+<p><code class="prettyprint">POST https://hostname/api/owners/:user/patchrun</code></p>
 
 <h3 id="arguments">Arguments</h3>
 
