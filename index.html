@@ -1737,6 +1737,266 @@ curl -X POST <span class="s2">"https://hostname/api/owners/acme/scans"</span> <s
 </tr>
 </tbody></table>
 
+<h1 id="job-runs">Job Runs</h1>
+
+<h2 id="list-all-jobs">List all jobs</h2>
+<pre class="highlight shell"><code><span class="c"># list all jobs</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/jobs"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"76fdce4d-0734-441c-b01b-6dd6bfce081a"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"done"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"nextRun"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-07-21T20:55:00Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"schedule"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-07-21T20:55:00Z"</span><span class="w">
+</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c8ba8e88-7e45-4253-9081-cbb17a5f0c76"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"scheduled"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Rec"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"nextRun"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-07-21T23:11:00Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"schedule"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"month"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"day"</span><span class="p">:</span><span class="w"> </span><span class="s2">"21"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"weekday"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"hour"</span><span class="p">:</span><span class="w"> </span><span class="s2">"23"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"minute"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"e0d5bbf0-a1c4-4c50-ad09-fc1486068e8c"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"skipped"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"nextRun"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0001-01-01T00:00:00Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"schedule"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-07-21T20:25:00Z"</span><span class="w">
+</span><span class="p">}]</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/jobs</code></p>
+
+<h3 id="return-values">Return values</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>uuid</td>
+<td>id of job run</td>
+</tr>
+<tr>
+<td>name</td>
+<td> string</td>
+<td>name of the job</td>
+</tr>
+<tr>
+<td>status</td>
+<td>string</td>
+<td>&#39;done&rsquo;, &#39;scheduled&rsquo; or &#39;skipped&rsquo;</td>
+</tr>
+<tr>
+<td>nextRun</td>
+<td>iso-date</td>
+<td> next scheduled run in UTC</td>
+</tr>
+<tr>
+<td>schedule</td>
+<td>cron or iso-date</td>
+<td> schedule</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+
+The schedule object may contain a specific ISO date:
+
+<pre class="inline">
+"schedule": "2015-07-21T20:50:00Z"
+</pre>
+
+It also supports to handle cron like values for recurring events:
+
+<pre class="inline">
+"schedule": {
+  "month": "*",
+  "day": "21",
+  "weekday": "*",
+  "hour": "23",
+  "minute": "11"
+}  
+</pre>
+
+</aside>
+
+<h2 id="get-job-details">Get job details</h2>
+<pre class="highlight shell"><code><span class="c"># get job details</span>
+curl  <span class="s2">"https://hostname/api/owners/acme/jobs/c8ba8e88-7e45-4253-9081-cbb17a5f0c76"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: 
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c8ba8e88-7e45-4253-9081-cbb17a5f0c76"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"scheduled"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Rec"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"nextRun"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-07-21T23:11:00Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"schedule"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"month"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"day"</span><span class="p">:</span><span class="w"> </span><span class="s2">"21"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"weekday"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"hour"</span><span class="p">:</span><span class="w"> </span><span class="s2">"23"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"minute"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"tasks"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"scan"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"environments"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+      </span><span class="s2">"nodes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"u12"</span><span class="p">,</span><span class="w"> </span><span class="s2">"u14"</span><span class="p">],</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="w">
+    </span><span class="p">}],</span><span class="w">
+    </span><span class="s2">"compliance"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+      </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"profile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"linux"</span><span class="w">
+    </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"profile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ssh"</span><span class="w">
+    </span><span class="p">}],</span><span class="w">
+    </span><span class="s2">"patchlevel"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+      </span><span class="s2">"profile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"force"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+    </span><span class="p">}]</span><span class="w">
+  </span><span class="p">}]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://hostname/api/owners/:user/jobs/:jobid</code></p>
+
+<h3 id="return-values">Return values</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>uuid</td>
+<td>id of job run</td>
+</tr>
+<tr>
+<td>name</td>
+<td> string</td>
+<td>name of the job</td>
+</tr>
+<tr>
+<td>status</td>
+<td>string</td>
+<td>&#39;done&rsquo;, &#39;scheduled&rsquo; or &#39;skipped&rsquo;</td>
+</tr>
+<tr>
+<td>nextRun</td>
+<td>iso-date</td>
+<td> next scheduled run in UTC</td>
+</tr>
+<tr>
+<td>schedule</td>
+<td>cron or iso-date</td>
+<td> schedule</td>
+</tr>
+<tr>
+<td>tasks</td>
+<td> array</td>
+<td> contains compliance scans or patch runs</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+
+Currently two types of tasks are supported: 'scan&rsquo; and 'patchrun&rsquo;. The task objects uses the same format as <a href="#execute-a-new-scan">Execute a new scan</a> and <a href="#execute-a-patch-run">Execute a patch run</a>
+
+</aside>
+
+<h2 id="create-job">Create job</h2>
+<pre class="highlight shell"><code><span class="c"># creates a job</span>
+curl -v -X POST <span class="s2">"https://hostname/api/owners/acme/jobs"</span> <span class="se">\</span>
+ -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>: <span class="se">\</span>
+  -d <span class="s2">"{</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">c8ba8e88-7e45-4253-9081-cbb17a5f0c76</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Rec</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">schedule</span><span class="se">\"</span><span class="s2">:{</span><span class="se">\"</span><span class="s2">hour</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">23</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">minute</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">11</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">day</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">21</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">month</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">*</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">weekday</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">*</span><span class="se">\"</span><span class="s2">},</span><span class="se">\"</span><span class="s2">tasks</span><span class="se">\"</span><span class="s2">:[{</span><span class="se">\"</span><span class="s2">compliance</span><span class="se">\"</span><span class="s2">:[{</span><span class="se">\"</span><span class="s2">owner</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">vulcanosec</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">profile</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">linux</span><span class="se">\"</span><span class="s2">},{</span><span class="se">\"</span><span class="s2">owner</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">vulcanosec</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">profile</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">ssh</span><span class="se">\"</span><span class="s2">}],</span><span class="se">\"</span><span class="s2">environments</span><span class="se">\"</span><span class="s2">:[{</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">production</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">nodes</span><span class="se">\"</span><span class="s2">:[</span><span class="se">\"</span><span class="s2">u12</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">u14</span><span class="se">\"</span><span class="s2">]}],</span><span class="se">\"</span><span class="s2">patchlevel</span><span class="se">\"</span><span class="s2">:[{</span><span class="se">\"</span><span class="s2">profile</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">default</span><span class="se">\"</span><span class="s2">}],</span><span class="se">\"</span><span class="s2">type</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">scan</span><span class="se">\"</span><span class="s2">}]}"</span>
+</code></pre>
+
+<blockquote>
+<p>uses the following json</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">
+</span><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c8ba8e88-7e45-4253-9081-cbb17a5f0c76"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Rec"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"schedule"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"hour"</span><span class="p">:</span><span class="w"> </span><span class="s2">"23"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"minute"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"day"</span><span class="p">:</span><span class="w"> </span><span class="s2">"21"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"month"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"weekday"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"tasks"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+    </span><span class="s2">"compliance"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+      </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"profile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"linux"</span><span class="w">
+    </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"profile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ssh"</span><span class="w">
+    </span><span class="p">}],</span><span class="w">
+    </span><span class="s2">"environments"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"nodes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"u12"</span><span class="p">,</span><span class="w"> </span><span class="s2">"u14"</span><span class="p">]</span><span class="w">
+    </span><span class="p">}],</span><span class="w">
+    </span><span class="s2">"patchlevel"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+      </span><span class="s2">"profile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="w">
+    </span><span class="p">}],</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"scan"</span><span class="w">
+  </span><span class="p">}]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="err">``</span><span class="w">
+
+</span><span class="err">&gt;</span><span class="w"> </span><span class="err">It</span><span class="w"> </span><span class="err">returns</span><span class="w">
+
+</span><span class="err">```http</span><span class="w">
+</span><span class="err">Status:</span><span class="w"> </span><span class="mi">204</span><span class="w"> </span><span class="err">No</span><span class="w"> </span><span class="err">Content</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://hostname/api/owners/:user/jobs/</code></p>
+
+<h2 id="delete-job">Delete job</h2>
+<pre class="highlight shell"><code><span class="c"># deletes a job</span>
+curl -X DELETE <span class="s2">"https://hostname/api/owners/acme/jobs/c8ba8e88-7e45-4253-9081-cbb17a5f0c76"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight http"><code><span class="err">Status: 204 No Content
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">DELETE  https://hostname/api/owners/:user/jobs/:jobid</code></p>
+
 <h1 id="patch-runs">Patch Runs</h1>
 
 <h2 id="list-all-patchrun-reports">List all patchrun reports</h2>
