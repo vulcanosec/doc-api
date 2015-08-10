@@ -1304,6 +1304,67 @@ curl  <span class="s2">"https://hostname/api/owners/vulcanosec/compliance"</span
 
 <p>GET /owners/:owner/compliance</p>
 
+<h3 id="return-values">Return values</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th> Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>int</td>
+<td> profile id</td>
+</tr>
+<tr>
+<td>owner</td>
+<td>string</td>
+<td>owner of profile</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>identifier of profile</td>
+</tr>
+<tr>
+<td>title</td>
+<td>string</td>
+<td>human readable profile title</td>
+</tr>
+<tr>
+<td>version</td>
+<td>string</td>
+<td>version of profile</td>
+</tr>
+<tr>
+<td>summary</td>
+<td>string</td>
+<td>describes the purpose of the profile</td>
+</tr>
+<tr>
+<td>description</td>
+<td>string</td>
+<td>long description</td>
+</tr>
+<tr>
+<td>license</td>
+<td>string</td>
+<td>license of the profile</td>
+</tr>
+<tr>
+<td>copyright</td>
+<td>string</td>
+<td>copyright holder</td>
+</tr>
+<tr>
+<td>copyright_email</td>
+<td>string</td>
+<td>contact for copyright holder</td>
+</tr>
+</tbody></table>
+
 <h2 id="list-specific-compliance-profile">List specific compliance profile</h2>
 <pre class="highlight shell"><code><span class="c"># lists all compliance profiles of a user</span>
 curl  <span class="s2">"https://hostname/api/owners/vulcanosec/compliance/ssh"</span> <span class="se">\</span>
@@ -1344,43 +1405,9 @@ curl  <span class="s2">"https://hostname/api/owners/vulcanosec/compliance/ssh"</
 
 <p>GET /owners/:owner/compliance/:profile</p>
 
-<h2 id="upload-a-compliance-profile-as-zip">Upload a compliance profile as ZIP</h2>
-<pre class="highlight shell"><code><span class="c"># uses httpie and jq</span>
-<span class="nv">server</span><span class="o">=</span><span class="s2">"https://hostname/api"</span>
-<span class="nv">token</span><span class="o">=</span><span class="k">$(</span>http post <span class="nv">$server</span>/oauth/token -a admin:flyingsheepwithwings | jq <span class="s1">'.access_token'</span> | tr -d <span class="s1">'"'</span><span class="k">)</span>
-zip -r newprofile.zip newprofile
-http -a <span class="nv">$token</span>: <span class="s2">"</span><span class="nv">$server</span><span class="s2">/owners/admin/compliance/newprofile/zip"</span> &lt; newprofile.zip
-</code></pre>
+<h2 id="list-all-compliance-profiles-accessible-by-user">List all compliance profiles accessible by user</h2>
 
-<h3 id="http-request">HTTP Request</h3>
-
-<p>POST /owners/:owner/compliance/:profile/zip</p>
-
-<h2 id="upload-a-compliance-profile-as-tar">Upload a compliance profile as TAR</h2>
-<pre class="highlight shell"><code><span class="c"># uses httpie and jq</span>
-<span class="nv">server</span><span class="o">=</span><span class="s2">"https://hostname/api"</span>
-<span class="nv">token</span><span class="o">=</span><span class="k">$(</span>http post <span class="nv">$server</span>/oauth/token -a admin:flyingsheepwithwings | jq <span class="s1">'.access_token'</span> | tr -d <span class="s1">'"'</span><span class="k">)</span>
-tar -cvzf newprofile.tar.gz newprofile
-http -a <span class="nv">$token</span>: <span class="s2">"</span><span class="nv">$server</span><span class="s2">/owners/admin/compliance/newprofile/tar"</span> &lt; newprofile.tar.gz
-</code></pre>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p>POST /owners/:owner/compliance/:profile/tar</p>
-
-<h2 id="download-a-compliance-profile-as-tar">Download a compliance profile as TAR</h2>
-<pre class="highlight shell"><code><span class="c"># uses httpie and jq</span>
-<span class="nv">server</span><span class="o">=</span><span class="s2">"https://hostname/api"</span>
-<span class="nv">token</span><span class="o">=</span><span class="k">$(</span>http post <span class="nv">$server</span>/oauth/token -a admin:flyingsheepwithwings | jq <span class="s1">'.access_token'</span> | tr -d <span class="s1">'"'</span><span class="k">)</span>
-http -a <span class="nv">$token</span>: <span class="s2">"</span><span class="nv">$server</span><span class="s2">/owners/admin/compliance/ssh/tar"</span> &gt; profile.tar.gz
-tar -zxvf profile.tar.gz
-</code></pre>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p>GET /owners/:owner/compliance/:profile/tar</p>
-
-<h2 id="list-all-compliance-profiles-for-user">List all compliance profiles for user</h2>
+<p>The results is grouped by owners of the profiles.</p>
 <pre class="highlight shell"><code><span class="c"># returns all profiles of a user</span>
 curl  <span class="s2">"https://hostname/api/user/compliance"</span> <span class="se">\</span>
  -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
@@ -1421,6 +1448,62 @@ curl  <span class="s2">"https://hostname/api/user/compliance"</span> <span class
 <h3 id="http-request">HTTP Request</h3>
 
 <p><code class="prettyprint">GET /user/compliance</code></p>
+
+<h2 id="upload-a-compliance-profile">Upload a compliance profile</h2>
+
+<p>This endpoint allows you to upload a tar or zip. It will extract the owner and id from the <code class="prettyprint">vmetadata.rb</code> and use this information to place the profile accordingly.</p>
+<pre class="highlight shell"><code><span class="c"># uses httpie and jq</span>
+<span class="nv">server</span><span class="o">=</span><span class="s2">"https://hostname/api"</span>
+<span class="nv">token</span><span class="o">=</span><span class="k">$(</span>http post <span class="nv">$server</span>/oauth/token -a admin:flyingsheepwithwings | jq <span class="s1">'.access_token'</span> | tr -d <span class="s1">'"'</span><span class="k">)</span>
+tar -cvzf newprofile.tar.gz newprofile
+http -a <span class="nv">$token</span>: <span class="s2">"</span><span class="nv">$server</span><span class="s2">/owners/admin/compliance"</span> &lt; newprofile.tar.gz
+</code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p>POST /owners/:owner/compliance/</p>
+
+<h2 id="upload-a-compliance-profile-as-zip">Upload a compliance profile as ZIP</h2>
+
+<p>Uploads a new profile to a specific id via zip. Create a new tar via <code class="prettyprint">zip -r newprofile.zip profile_directory</code>. You could also use the context menu of Windows and MacOS to compress the profile directory.</p>
+<pre class="highlight shell"><code><span class="c"># uses httpie and jq</span>
+<span class="nv">server</span><span class="o">=</span><span class="s2">"https://hostname/api"</span>
+<span class="nv">token</span><span class="o">=</span><span class="k">$(</span>http post <span class="nv">$server</span>/oauth/token -a admin:flyingsheepwithwings | jq <span class="s1">'.access_token'</span> | tr -d <span class="s1">'"'</span><span class="k">)</span>
+zip -r newprofile.zip newprofile
+http -a <span class="nv">$token</span>: <span class="s2">"</span><span class="nv">$server</span><span class="s2">/owners/admin/compliance/newprofile/zip"</span> &lt; newprofile.zip
+</code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p>POST /owners/:owner/compliance/:profile/zip</p>
+
+<h2 id="upload-a-compliance-profile-as-tar.">Upload a compliance profile as TAR.</h2>
+
+<p>Upload a new profile to a specific id via tar. Create a new tar via <code class="prettyprint">tar -cvzf newprofile.tar.gz profile_directory</code></p>
+<pre class="highlight shell"><code><span class="c"># uses httpie and jq</span>
+<span class="nv">server</span><span class="o">=</span><span class="s2">"https://hostname/api"</span>
+<span class="nv">token</span><span class="o">=</span><span class="k">$(</span>http post <span class="nv">$server</span>/oauth/token -a admin:flyingsheepwithwings | jq <span class="s1">'.access_token'</span> | tr -d <span class="s1">'"'</span><span class="k">)</span>
+tar -cvzf newprofile.tar.gz newprofile
+http -a <span class="nv">$token</span>: <span class="s2">"</span><span class="nv">$server</span><span class="s2">/owners/admin/compliance/newprofile/tar"</span> &lt; newprofile.tar.gz
+</code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p>POST /owners/:owner/compliance/:profile/tar</p>
+
+<h2 id="download-a-compliance-profile-as-tar.">Download a compliance profile as TAR.</h2>
+
+<p>Downloads an existing profile from the server and allows you to modify it.</p>
+<pre class="highlight shell"><code><span class="c"># uses httpie and jq</span>
+<span class="nv">server</span><span class="o">=</span><span class="s2">"https://hostname/api"</span>
+<span class="nv">token</span><span class="o">=</span><span class="k">$(</span>http post <span class="nv">$server</span>/oauth/token -a admin:flyingsheepwithwings | jq <span class="s1">'.access_token'</span> | tr -d <span class="s1">'"'</span><span class="k">)</span>
+http -a <span class="nv">$token</span>: <span class="s2">"</span><span class="nv">$server</span><span class="s2">/owners/admin/compliance/ssh/tar"</span> &gt; profile.tar.gz
+tar -zxvf profile.tar.gz
+</code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p>GET /owners/:owner/compliance/:profile/tar</p>
 
 <h1 id="scans">Scans</h1>
 
