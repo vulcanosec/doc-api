@@ -1260,6 +1260,168 @@ curl  <span class="s2">"https://hostname/api/owners/acme/envs/production/nodes/1
 
 <p><code class="prettyprint">GET https://hostname/api/owners/:user/envs/:env/nodes/:node/packages</code></p>
 
+<h1 id="compliance-profiles">Compliance Profiles</h1>
+
+<h2 id="list-all-compliance-profiles-of-owner">List all compliance profiles of owner</h2>
+<pre class="highlight shell"><code><span class="c"># lists all compliance profiles of a user</span>
+curl  <span class="s2">"https://hostname/api/owners/vulcanosec/compliance"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"linux"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"linux"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec/linux"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Basic Linux"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"summary"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Verify that Linux nodes are configured securely"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"# Basic Linux Compliance Profile\n\ncopyright: 2015, Vulcano Security GmbH\nlicense: All rights reserved\n"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"license"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Proprietary, All rights reserved"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"copyright"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Vulcano Security GmbH"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"copyright_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hello@vulcanosec.com"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"mysql"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mysql"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec/mysql"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Basic MySQL"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"summary"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Verify that MySQL Server is configured securely"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"# Basic MySQL Compliance Profile\n\ncopyright: 2015, Vulcano Security GmbH\nlicense: All rights reserved\n"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"license"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Proprietary, All rights reserved"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"copyright"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Vulcano Security GmbH"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"copyright_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hello@vulcanosec.com"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+</span><span class="err">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p>GET /owners/:owner/compliance</p>
+
+<h2 id="list-specific-compliance-profile">List specific compliance profile</h2>
+<pre class="highlight shell"><code><span class="c"># lists all compliance profiles of a user</span>
+curl  <span class="s2">"https://hostname/api/owners/vulcanosec/compliance/ssh"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+
+<blockquote>
+<p>It returns</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ssh"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec/ssh"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Basic SSH"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"summary"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Verify that SSH Server and SSH Client are configured securely"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"# Basic SSH Compliance Profile\n\ncopyright: 2015, Vulcano Security GmbH\nlicense: All rights reserved\n"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"license"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Proprietary, All rights reserved"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"copyright"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Vulcano Security GmbH"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"copyright_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hello@vulcanosec.com"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"rules"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"spec/ssh_folder_spec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SSH folder configuration"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"rules"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"vulcanosec/ssh/basic-1"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"impact"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/etc/ssh should be a directory"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"desc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"In order for OpenSSH to function correctly, its configuration path must be a folder."</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="err">...</span><span class="w">
+            </span><span class="err">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p>GET /owners/:owner/compliance/:profile</p>
+
+<h2 id="upload-a-compliance-profile-as-zip">Upload a compliance profile as ZIP</h2>
+<pre class="highlight shell"><code><span class="c"># uses httpie and jq</span>
+<span class="nv">server</span><span class="o">=</span><span class="s2">"https://hostname/api"</span>
+<span class="nv">token</span><span class="o">=</span><span class="k">$(</span>http post <span class="nv">$server</span>/oauth/token -a admin:flyingsheepwithwings | jq <span class="s1">'.access_token'</span> | tr -d <span class="s1">'"'</span><span class="k">)</span>
+zip -r newprofile.zip newprofile
+http -a <span class="nv">$token</span>: <span class="s2">"</span><span class="nv">$server</span><span class="s2">/owners/admin/compliance/newprofile/zip"</span> &lt; newprofile.zip
+</code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p>POST /owners/:owner/compliance/:profile/zip</p>
+
+<h2 id="upload-a-compliance-profile-as-tar">Upload a compliance profile as TAR</h2>
+<pre class="highlight shell"><code><span class="c"># uses httpie and jq</span>
+<span class="nv">server</span><span class="o">=</span><span class="s2">"https://hostname/api"</span>
+<span class="nv">token</span><span class="o">=</span><span class="k">$(</span>http post <span class="nv">$server</span>/oauth/token -a admin:flyingsheepwithwings | jq <span class="s1">'.access_token'</span> | tr -d <span class="s1">'"'</span><span class="k">)</span>
+tar -cvzf newprofile.tar.gz newprofile
+http -a <span class="nv">$token</span>: <span class="s2">"</span><span class="nv">$server</span><span class="s2">/owners/admin/compliance/newprofile/tar"</span> &lt; newprofile.tar.gz
+</code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p>POST /owners/:owner/compliance/:profile/tar</p>
+
+<h2 id="download-a-compliance-profile-as-tar">Download a compliance profile as TAR</h2>
+<pre class="highlight shell"><code><span class="c"># uses httpie and jq</span>
+<span class="nv">server</span><span class="o">=</span><span class="s2">"https://hostname/api"</span>
+<span class="nv">token</span><span class="o">=</span><span class="k">$(</span>http post <span class="nv">$server</span>/oauth/token -a admin:flyingsheepwithwings | jq <span class="s1">'.access_token'</span> | tr -d <span class="s1">'"'</span><span class="k">)</span>
+http -a <span class="nv">$token</span>: <span class="s2">"</span><span class="nv">$server</span><span class="s2">/owners/admin/compliance/ssh/tar"</span> &gt; profile.tar.gz
+tar -zxvf profile.tar.gz
+</code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p>GET /owners/:owner/compliance/:profile/tar</p>
+
+<h2 id="list-all-compliance-profiles-for-user">List all compliance profiles for user</h2>
+<pre class="highlight shell"><code><span class="c"># returns all profiles of a user</span>
+curl  <span class="s2">"https://hostname/api/user/compliance"</span> <span class="se">\</span>
+ -u VS3x1XSg4Hk/wxw8IP+2XpmoKynR7urxglaGfLfFRXbxYljxNW5mksOSNj+BkO2DVoQehGosBnqCJA8WAz3Jyg<span class="o">==</span>:
+</code></pre>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"acme"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"cis-ubuntu-level1"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cis-ubuntu-level1"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin/cis-ubuntu-level1"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CIS Ubuntu 14.04 LTS Server Benchmark Level 1"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"summary"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CIS Ubuntu 14.04 LTS Server Benchmark"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"# CIS Ubuntu 14.04 LTS Server Benchmark\n\ncopyright: 2015, Vulcano Security GmbH\nlicense: All rights reserved\n"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"license"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Proprietary, All rights reserved"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"copyright"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Vulcano Security GmbH"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"copyright_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hello@vulcanosec.com"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"vulcanosec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"linux"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"linux"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vulcanosec/linux"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Basic Linux"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"summary"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Verify that Linux nodes are configured securely"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"# Basic Linux Compliance Profile\n\ncopyright: 2015, Vulcano Security GmbH\nlicense: All rights reserved\n"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"license"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Proprietary, All rights reserved"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"copyright"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Vulcano Security GmbH"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"copyright_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hello@vulcanosec.com"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="err">...</span><span class="w">
+    </span><span class="err">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /user/compliance</code></p>
+
 <h1 id="scans">Scans</h1>
 
 <h2 id="list-all-scans-reports">List all scans reports</h2>
