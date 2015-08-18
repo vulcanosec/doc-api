@@ -2053,13 +2053,6 @@ curl -X POST <span class="s2">"https://hostname/api/owners/acme/scans"</span> <s
 <p>Some server parameters are exposed via API and can be configured.</p>
 
 <h2 id="get-server-configuration">Get server configuration</h2>
-
-<p>This returns the server&rsquo;s global configuration, which can be edited via
-API or configuration file. It only contains parameters that can be safely
-exposed.</p>
-
-<p>All timeout configurations are set in seconds, i.e. <code class="prettyprint">1800</code> results in a 30min
-timeout.</p>
 <pre class="highlight shell"><code><span class="c"># get the server's configuration</span>
 curl -X GET <span class="s2">"https://hostname/api/server/config"</span> <span class="se">\</span>
  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
@@ -2073,6 +2066,13 @@ curl -X GET <span class="s2">"https://hostname/api/server/config"</span> <span c
     </span><span class="s2">"detectTimeout"</span><span class="p">:</span><span class="mi">25</span><span class="p">,</span><span class="s2">"scanTimeout"</span><span class="p">:</span><span class="mi">1800</span><span class="p">,</span><span class="s2">"updateTimeout"</span><span class="p">:</span><span class="mi">1800</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
+
+<p>This returns the server&rsquo;s global configuration, which can be edited via
+API or configuration file. It only contains parameters that can be safely
+exposed.</p>
+
+<p>All timeout configurations are set in seconds, i.e. <code class="prettyprint">1800</code> results in a 30min
+timeout.</p>
 
 <h2 id="edit-server-configuration">Edit server configuration</h2>
 <pre class="highlight shell"><code><span class="c"># edits the server's global configuration</span>
